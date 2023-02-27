@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (JsonParsing "JsonParsing.cpp" "JsonParsing.h"  "JsonComponents/JsonComponent.h"  "JsonComponents/Composites/JsonComposite.h"  "JsonComponents/Composites/JsonObject.h" "JsonComponents/Composites/JsonArray.h" "JsonComponents/Leaves/JsonValue.h"  "JsonComponents/Leaves/JsonNumber.h" "JsonComponents/Leaves/JsonString.h" "JsonComponents/Leaves/JsonValue.cpp")
+add_executable (JsonParsing "JsonParsing.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JsonParsing PROPERTY CXX_STANDARD 20)
