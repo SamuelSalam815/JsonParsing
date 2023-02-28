@@ -1,85 +1,96 @@
-#include<Components/JsonComponent.h>
+#include "Components/JsonComponent.h"
 
-
-struct jason_value : json_component
+struct JsonValue : JsonComponent
 {
+
 private:
-	std::shared_ptr<json_component> child;
-	bool is_null_value;
-	bool is_bool_value;
+	enum JsonValueType { null, boolean, string, number, component};
+
+	std::shared_ptr<JsonComponent> child;
+	JsonValueType value_type;
 	bool bool_value;
+	std::string string_value;
+	double number_value;
+
 public:
-	jason_value(std::shared_ptr<json_component> parent)
+	JsonValue(std::shared_ptr<JsonComponent> parent)
 	{
 		this->parent = parent;
-		is_null_value = true;
-		is_bool_value = false;
-		bool_value = false;
-		child = nullptr;
+		value_type = null;
 	}
-	jason_value(std::shared_ptr<json_component> parent, bool bool_value)
+	JsonValue(std::shared_ptr<JsonComponent> parent, bool bool_value)
 	{
 		this->parent = parent;
-		is_null_value = false;
-		is_bool_value = true;
 		this->bool_value = bool_value;
-		child = nullptr
+		value_type = boolean;
 	}
-	jason_value(std::shared_ptr<json_component> parent, std::shared_ptr<json_component> child)
+	JsonValue(std::shared_ptr<JsonComponent> parent, std::string string)
 	{
 		this->parent = parent;
-		is_null_value = false;
-		is_bool_value = false;
-		bool_value = false;
+		this->string_value = string;
+		value_type = string;
+	}
+	JsonValue(std::shared_ptr<JsonComponent> parent, double number)
+	{
+		this->parent = parent;
+		this->number_value = number;
+		value_type = number;
+	}
+	JsonValue(std::shared_ptr<JsonComponent> parent, std::shared_ptr<JsonComponent> child)
+	{
+		this->parent = parent;
 		this->child = child;
+		value_type = component;
 	}
 	
-	// Inherited via json_component
-	virtual std::string ToString() override
+	// Inherited via JsonComponent
+	virtual void PrintToStream(std::shared_ptr<std::ostream> output) override
 	{
-		if (is_null_value)
+		switch (value_type)
 		{
-			return std::string("null");
+		case null:
+			*output << "null";
+			break;
+		case boolean:
+			*output << bool_value;
+			break;
+		case string:
+			*output << "'" << string_value << "'";
+			break;
+		case number:
+			*output << number_value;
+			break;
+		case component:
+			child->PrintToStream(output);
+			break;
 		}
-
-		if (is_bool_value)
-		{
-			return std::string(bool_value);
-		}
-
-		return child->ToString();
 	}
-
-	virtual std::shared_ptr<json_component> GetParent() override
+	virtual std::weak_ptr<JsonComponent> GetParent() override
 	{
 		return this->parent;
 	}
-
 	virtual int GetNumChildren() override
 	{
-		if (is_null_value || is_bool_value)
+		if (value_type == component)
 		{
-			return 0;
+			return 1;
 		}
 
-		return 1;
+		return 0;
 	}
-
-	virtual bool TryGetChildAtIndex(int index, std::shared_ptr<json_component> child) override
+	virtual bool TryGetChild(std::string name, std::weak_ptr<JsonComponent> child) override
 	{
-		if (is_null_value || is_bool_value)
+		if (value_type != component)
 		{
 			return false;
 		}
 
-		if (index != 0)
-		{
-			return false;
-		}
-
-		child = this->child;
+		child = std::make_weak<JsonComponent>(this->child);
 
 		return true;
 	}
-
+	virtual bool TryAddChild(std::string name, std::shared_ptr<JsonComponent> child) override
+	{
+		return false;
+	}
 };
