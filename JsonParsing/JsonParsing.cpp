@@ -2,7 +2,6 @@
 //
 
 #include "JsonParsing.h"
-#include "Components/JsonObject.cpp"
 #include "Components/JsonValue.cpp"
 
 int main()
@@ -17,3 +16,4 @@ int main()
 	}
 	return 0;
 }
+
