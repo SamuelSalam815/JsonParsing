@@ -8,3 +8,6 @@
 #include <cctype>
 #include <string>
 #include <stdexcept>
+#include "JsonComponents.h"
+
+bool TryParseJsonValue(std::istream& context, JsonValue* output);

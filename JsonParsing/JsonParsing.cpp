@@ -1,52 +1,4 @@
-﻿// JsonParsing.cpp : Defines the entry point for the application.
-//
-
-#include "JsonParsing.h"
-
-struct JsonValue
-{
-private:
-	bool bool_value;
-	double number_value;
-	
-	enum value_type
-	{
-		null,
-		boolean,
-		number
-	}value_type;
-public:
-	JsonValue()
-	{
-		value_type = null;
-	}
-	JsonValue(bool bool_value)
-	{
-		this->bool_value = bool_value;
-		value_type = boolean;
-	}
-	JsonValue(double number_value)
-	{
-		this->number_value = number_value;
-		value_type = number;
-	}
-
-	void ToStream(std::ostream& output)
-	{
-		switch (value_type)
-		{
-		case null:
-			output << "null";
-			break;
-		case boolean:
-			output << (bool_value ? "true" : "false");
-			break;
-		case number:
-			output << number_value;
-			break;
-		}
-	}
-};
+﻿#include "../JsonParsingHeaders/JsonParsing.h"
 
 bool IsExpectedStringNext(std::string expectedString, std::istream& context)
 {
@@ -60,8 +12,17 @@ bool IsExpectedStringNext(std::string expectedString, std::istream& context)
 	return true;
 }
 
+void SkipWhiteSpace(std::istream& context)
+{
+	while (context.good() && std::isspace(context.peek()))
+	{
+		context.get();
+	}
+}
+
 bool TryParseJsonValue(std::istream& context, JsonValue* output)
 {
+	SkipWhiteSpace(context);
 	bool success = false;
 	switch (context.peek())
 	{
@@ -86,7 +47,7 @@ bool TryParseJsonValue(std::istream& context, JsonValue* output)
 	default:
 		std::string nextString;
 		context >> nextString;
-		try 
+		try
 		{
 			double valueParsed = std::stod(nextString.c_str(), nullptr);
 			success = true;
@@ -98,32 +59,4 @@ bool TryParseJsonValue(std::istream& context, JsonValue* output)
 	}
 
 	return success;
-}
-
-
-
-
-int main()
-{
-	std::cout << "Hello CMake." << std::endl;
-
-	/*std::ifstream filereader;
-	filereader.open("input.txt");
-	for (char c = filereader.get(); filereader.good(); c = filereader.get())
-	{
-		std::cout << c;
-	}*/
-
-	JsonValue jsonValuePtr;
-	if (TryParseJsonValue(std::cin, &jsonValuePtr))
-	{
-		std::cout << std::endl << "Parsed : ";
-		jsonValuePtr.ToStream(std::cout);
-		std::cout << std::endl;
-	}
-	else
-	{
-		std::cout << std::endl << "Failed to parse!" << std::endl;
-	}
-	return 0;
 }
