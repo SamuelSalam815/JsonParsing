@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 struct JsonComponent
 {
@@ -25,4 +26,19 @@ private:
 		boolean,
 		number
 	}value_type;
+};
+
+struct JsonArray : JsonComponent
+{
+public:
+	JsonArray();
+	
+	JsonComponent* GetChild(int index);
+	void AddChild(JsonComponent* child);
+
+	// Inherited from JsonComponent
+	void PrintToStream(std::ostream& output);
+
+private:
+	std::vector<JsonComponent*> children;
 };

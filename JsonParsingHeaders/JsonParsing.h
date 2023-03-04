@@ -8,6 +8,21 @@
 #include <cctype>
 #include <string>
 #include <stdexcept>
+#include <sstream>
 #include "JsonComponents.h"
 
-bool TryParseJsonValue(std::istream& context, JsonValue* output);
+struct JsonParsingExcption {
+	
+	std::string message;
+	int streamPosition;
+
+	JsonParsingExcption(std::string message, int streamPosition)
+	{
+		this->message = message;
+		this->streamPosition = streamPosition;
+	}
+};
+
+void ParseJsonValue(std::istream& context, JsonValue* output);
+
+void ParseJsonArray(std::istream& context, JsonValue* output);

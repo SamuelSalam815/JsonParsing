@@ -13,16 +13,34 @@ int main()
 		std::cout << c;
 	}*/
 
-	JsonValue jsonValuePtr;
-	if (TryParseJsonValue(std::cin, &jsonValuePtr))
+	std::string input;
+	std::cin >> input;
+	std::stringstream stringStream;
+	stringStream << input;
+	try 
 	{
+		JsonValue jsonValuePtr;
+		ParseJsonValue(stringStream, &jsonValuePtr);
 		std::cout << std::endl << "Parsed : ";
 		jsonValuePtr.PrintToStream(std::cout);
 		std::cout << std::endl;
 	}
-	else
+	catch(JsonParsingExcption exception)
 	{
-		std::cout << std::endl << "Failed to parse!" << std::endl;
+		stringStream.clear();
+		stringStream << input;
+		
+		for (int numCharsSkipped = 0; numCharsSkipped < exception.streamPosition; numCharsSkipped++)
+		{
+			stringStream.get();
+		}
+		std::string remainingInput;
+		stringStream >> remainingInput;
+		std::cerr
+			<< exception.message << std::endl
+			<< "Encountered at :" << std::endl
+			<< remainingInput;
+
 	}
 	return 0;
 }

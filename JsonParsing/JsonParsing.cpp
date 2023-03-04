@@ -20,9 +20,10 @@ void SkipWhiteSpace(std::istream& context)
 	}
 }
 
-bool TryParseJsonValue(std::istream& context, JsonValue* output)
+void ParseJsonValue(std::istream& context, JsonValue* output)
 {
 	SkipWhiteSpace(context);
+	int beginPosition = context.tellg();
 	bool success = false;
 	switch (context.peek())
 	{
@@ -58,5 +59,20 @@ bool TryParseJsonValue(std::istream& context, JsonValue* output)
 		}
 	}
 
-	return success;
+	if (!success)
+	{
+		throw JsonParsingExcption("Expected 'null', 'true' or 'false'.", beginPosition);
+	}
+}
+
+void ParseJsonArray(std::istream& context, JsonArray* output)
+{
+	SkipWhiteSpace(context);
+	int beginPosition = context.tellg();
+	if (context.get() != '[')
+	{
+		throw JsonParsingExcption("Expected '['.", beginPosition);
+	}
+	JsonArray result;
+	// ==== Hmm
 }
