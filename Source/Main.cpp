@@ -1,6 +1,7 @@
 // Main.cpp : Defines the entry point for the application.
 
-#include "../JsonParsingHeaders/JsonParsing.h"
+#include "Headers/JsonParsing.h"
+#include <sstream>
 
 int main()
 {

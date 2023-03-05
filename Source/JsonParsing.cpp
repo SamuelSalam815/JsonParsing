@@ -1,4 +1,4 @@
-﻿#include "../JsonParsingHeaders/JsonParsing.h"
+﻿#include "Headers/JsonParsing.h"
 
 bool IsExpectedStringNext(std::string expectedString, std::istream& context)
 {
@@ -74,5 +74,5 @@ void ParseJsonArray(std::istream& context, JsonArray* output)
 		throw JsonParsingExcption("Expected '['.", beginPosition);
 	}
 	JsonArray result;
-	// ==== Hmm
+	
 }

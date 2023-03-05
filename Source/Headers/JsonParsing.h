@@ -3,13 +3,9 @@
 
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <cctype>
-#include <string>
-#include <stdexcept>
-#include <sstream>
-#include "JsonComponents.h"
+#include<string>
+#include"JsonValue.h"
+#include"JsonArray.h"
 
 struct JsonParsingExcption {
 	
@@ -25,4 +21,4 @@ struct JsonParsingExcption {
 
 void ParseJsonValue(std::istream& context, JsonValue* output);
 
-void ParseJsonArray(std::istream& context, JsonValue* output);
+void ParseJsonArray(std::istream& context, JsonArray* output);
