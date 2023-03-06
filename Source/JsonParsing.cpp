@@ -54,7 +54,10 @@ void ParseJsonValue(std::istream& context, JsonValue* output)
 			success = true;
 			*output = JsonValue(valueParsed);
 		}
-		catch (const std::invalid_argument& invalidArgumentException) {}
+		catch (const std::invalid_argument& invalidArgumentException) 
+		{
+			
+		}
 	}
 
 	if (!success)
