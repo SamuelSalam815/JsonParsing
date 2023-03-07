@@ -1,4 +1,4 @@
-add_executable (JsonParsing "JsonParsing.cpp"   "Main.cpp" "Headers/JsonComponent.h" )
+add_executable (JsonParsing "Main.cpp"  "Headers/JsonValue.h" "Headers/JsonParsing.h" "Headers/JsonArray.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JsonParsing PROPERTY CXX_STANDARD 17)

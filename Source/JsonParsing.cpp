@@ -62,7 +62,7 @@ void ParseJsonValue(std::istream& context, JsonValue* output)
 
 	if (!success)
 	{
-		throw JsonParsingExcption("Expected 'null', 'true' or 'false'.", beginPosition);
+		throw JsonParsingExcption("Expected 'null', 'true' or 'false'.");
 	}
 }
 
@@ -72,7 +72,7 @@ void ParseJsonArray(std::istream& context, JsonArray* output)
 	int beginPosition = context.tellg();
 	if (context.get() != '[')
 	{
-		throw JsonParsingExcption("Expected '['.", beginPosition);
+		throw JsonParsingExcption("Expected '['.");
 	}
 	JsonArray result;
 	
