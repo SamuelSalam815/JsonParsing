@@ -57,13 +57,6 @@ public:
 		value_type = array;
 		SetAllValueStoresToDefault();
 		this->array_value = array_value;
-		array_value->
-	}
-	JsonValue(shared_ptr<JsonValue> array_value)
-	{
-		value_type = array;
-		SetAllValueStoresToDefault();
-		this->array_value = array_value;
-		array_value->SetParent
+		SetParent(shared_from_this(), array_value);
 	}
 };
