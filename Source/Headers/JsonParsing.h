@@ -1,4 +1,6 @@
-#include"JsonValue.h"
+#include "JsonValue.h"
+#include "JsonArray.h"
+#include <iostream>
 #pragma once
 
 void ParseJsonValue(std::istream& context, JsonValue* output);

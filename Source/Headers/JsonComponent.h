@@ -10,13 +10,13 @@ struct JsonComponent : public std::enable_shared_from_this< JsonComponent >
 {
 protected:
 	weak_ptr<JsonComponent> parent;
-	static void SetParent(shared_ptr<JsonComponent> parent, shared_ptr<JsonComponent> child)
-	{
-		child->parent = parent;
-	}
+	static void SetParent
+	(
+		shared_ptr<JsonComponent> parent,
+		shared_ptr<JsonComponent> child
+	);
 public :
-	weak_ptr<JsonComponent> GetParent()
-	{
-		return parent;
-	}
+	weak_ptr<JsonComponent> GetParent();
 };
+
+typedef shared_ptr<JsonComponent> SharedJsonComponent;
