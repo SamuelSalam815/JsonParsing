@@ -1,69 +1,38 @@
 ﻿#include "Headers/JsonParsing.h"
+#include "Headers/JsonLiteralParsing.h"
 
-bool IsExpectedStringNext(std::string expectedString, std::istream& context)
+void AssertStringIsNext(std::istream& context, std::string expectedString)
 {
-	for (int numCharsChecked = 0; numCharsChecked < expectedString.size(); numCharsChecked++)
+	if (!IsExpectedStringNext(context, expectedString))
 	{
-		if (context.get() != expectedString[numCharsChecked])
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-void SkipWhiteSpace(std::istream& context)
-{
-	while (context.good() && std::isspace(context.peek()))
-	{
-		context.get();
+		throw JsonParsingException("Expected '" + expectedString + "'");
 	}
 }
 
 void ParseJsonValue(std::istream& context, JsonValue* output)
 {
 	SkipWhiteSpace(context);
-	int beginPosition = context.tellg();
-	bool success = false;
 	switch (context.peek())
 	{
 	case 'n':
-		if (success = IsExpectedStringNext("null", context))
-		{
-			*output = JsonValue();
-		}
+		AssertStringIsNext("null");
+		*output = JsonValue();
 		break;
 	case 't':
-		if (success = IsExpectedStringNext("true", context))
-		{
-			*output = JsonValue(true);
-		}
+		AssertStringIsNext("true");
+		*output = JsonValue(true);
 		break;
 	case 'f':
-		if (success = IsExpectedStringNext("false", context))
-		{
-			*output = JsonValue(false);
-		}
+		AssertStringIsNext("false");
+		*output = JsonValue(false);
 		break;
+	case '\'':
+		ParseString(context, output);
 	default:
-		std::string nextString;
-		context >> nextString;
-		try
-		{
-			double valueParsed = std::stod(nextString.c_str(), nullptr);
-			success = true;
-			*output = JsonValue(valueParsed);
-		}
-		catch (const std::invalid_argument& invalidArgumentException) 
-		{
-			
-		}
+		ParseNumber(context, output);
 	}
 
-	if (!success)
-	{
-		throw JsonParsingExcption("Expected 'null', 'true' or 'false'.");
-	}
+	throw JsonParsingException("Expected a number, 'null', 'true' or 'false'.");
 }
 
 void ParseJsonArray(std::istream& context, JsonArray* output)

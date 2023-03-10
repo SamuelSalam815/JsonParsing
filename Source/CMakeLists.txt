@@ -1,4 +1,4 @@
-add_executable (JsonParsing "Main.cpp"  "Headers/JsonValue.h" "Headers/JsonParsing.h" "Headers/JsonArray.h" "JsonValue.cpp" "JsonComponent.cpp" "JsonArray.cpp" "Headers/JsonDictionary.h")
+add_executable (JsonParsing "Main.cpp"  "Headers/JsonValue.h" "Headers/JsonParsing.h" "Headers/JsonArray.h" "JsonValue.cpp" "JsonComponent.cpp" "JsonArray.cpp" "Headers/JsonDictionary.h" "JsonLiteralParsing.cpp" "Headers/JsonLiteralParsing.h" "Headers/JsonParsingException.h"  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JsonParsing PROPERTY CXX_STANDARD 17)
