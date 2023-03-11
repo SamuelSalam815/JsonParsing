@@ -1,4 +1,11 @@
-add_executable (JsonParsing "Main.cpp"  "Headers/JsonValue.h" "Headers/JsonParsing.h" "Headers/JsonArray.h" "JsonValue.cpp" "JsonComponent.cpp" "JsonArray.cpp" "Headers/JsonDictionary.h" "JsonLiteralParsing.cpp" "Headers/JsonLiteralParsing.h" "Headers/JsonParsingException.h"  )
+add_executable (JsonParsing 
+"JsonArray.cpp" 
+"JsonComponent.cpp" 
+"JsonLiteralParsing.cpp" 
+"JsonParsing.cpp"
+"JsonValue.cpp" 
+"Main.cpp"  
+)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JsonParsing PROPERTY CXX_STANDARD 17)
@@ -9,4 +16,11 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy
             ${CMAKE_CURRENT_SOURCE_DIR}/../Data/input.json
             ${CMAKE_CURRENT_BINARY_DIR}/input.json
+)
+
+add_custom_command(
+    TARGET JsonParsing POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_CURRENT_SOURCE_DIR}/../Data/simpleinput.json
+            ${CMAKE_CURRENT_BINARY_DIR}/simpleinput.json
 )

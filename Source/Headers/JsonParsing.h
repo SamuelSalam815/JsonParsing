@@ -5,3 +5,4 @@
 #pragma once
 
 void ParseJsonValue(std::istream& context, JsonValue* output);
+void ParseJsonArray(std::istream& context, JsonArray* output);
