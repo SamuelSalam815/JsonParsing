@@ -20,28 +20,28 @@ void ParseJsonValue(ParsingInputPtr context, shared_ptr<JsonValue> output)
 	case 'n':
 		AssertStringIsNext(context, "null");
 		*output = JsonValue();
-		break;
+		return;
 	case 't':
 		AssertStringIsNext(context, "true");
 		*output = JsonValue(true);
-		break;
+		return;
 	case 'f':
 		AssertStringIsNext(context, "false");
 		*output = JsonValue(false);
-		break;
+		return;
 	case '\'':
 		//ParseString(context, &parsedString);
 		*output = JsonValue(parsedString);
-		break;
+		return;
 	case '[':
 		parsedJsonArray = std::make_shared<JsonArray>();
 		ParseJsonArray(context, parsedJsonArray);
 		*output = JsonValue(parsedJsonArray);
-		break;
+		return;
 	default:
 		parsedNumber = ParseNumber(context);
 		*output = JsonValue(parsedNumber);
-		break;
+		return;
 	}
 
 	throw JsonParsingException("Expected a string, a number, '[', 'null', 'true' or 'false'.", context);
@@ -57,12 +57,18 @@ void ParseJsonArray(ParsingInputPtr context, shared_ptr<JsonArray> output)
 
 	shared_ptr<JsonValue> currentValue;
 	SkipWhiteSpace(context);
+	bool isFirstElement = true;
 	while (context->peek() != ']')
 	{
-		currentValue = std::make_shared<JsonValue>(new JsonValue());
+		if (!isFirstElement)
+		{
+			AssertStringIsNext(context, ",");
+		}
+		isFirstElement = false;
+		currentValue = std::make_shared<JsonValue>();
 		ParseJsonValue(context, currentValue);
 		output->AddChild(currentValue);
 		SkipWhiteSpace(context);
 	}
-	context.get(); // discard closing bracket
+	context->get(); // discard closing bracket
 }
