@@ -28,11 +28,11 @@ bool IsCharValidToAppearInNumber(char c)
 
 // ==== Public Methods ====
 
-bool IsExpectedStringNext(std::istream& context, std::string expectedString)
+bool IsExpectedStringNext(ParsingInputPtr context, std::string expectedString)
 {
 	for (int numCharsChecked = 0; numCharsChecked < expectedString.size(); numCharsChecked++)
 	{
-		if (context.get() != expectedString[numCharsChecked])
+		if (context->get() != expectedString[numCharsChecked])
 		{
 			return false;
 		}
@@ -40,18 +40,18 @@ bool IsExpectedStringNext(std::istream& context, std::string expectedString)
 	return true;
 }
 
-void SkipWhiteSpace(std::istream& context)
+void SkipWhiteSpace(ParsingInputPtr context)
 {
-	while (context.good() && std::isspace(context.peek()))
+	while (context->good() && std::isspace(context->peek()))
 	{
-		context.get();
+		context->get();
 	}
 }
 
-void ParseNumber(std::istream& context, double* output)
+double ParseNumber(ParsingInputPtr context)
 {
 	SkipWhiteSpace(context);
-	switch (context.peek())
+	switch (context->peek())
 	{
 	case '-':
 	case '0':
@@ -66,16 +66,16 @@ void ParseNumber(std::istream& context, double* output)
 	case '9':
 		break;
 	default:
-		throw JsonParsingException("Expected '-' or digit");
+		throw JsonParsingException("Expected '-' or digit", context);
 		break;
 	}
 
 	std::vector<char> charsRead = std::vector<char>();
-	while (context.good())
+	while (context->good())
 	{
-		if (IsCharValidToAppearInNumber(context.peek()))
+		if (IsCharValidToAppearInNumber(context->peek()))
 		{
-			charsRead.push_back(context.get());
+			charsRead.push_back(context->get());
 		}
 		else
 		{
@@ -84,5 +84,5 @@ void ParseNumber(std::istream& context, double* output)
 	}
 
 	char* ptrToFirstElement = &(charsRead[0]);
-	*output = std::atof(ptrToFirstElement);
+	return std::atof(ptrToFirstElement);
 }

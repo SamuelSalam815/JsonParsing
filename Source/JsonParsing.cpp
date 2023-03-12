@@ -1,21 +1,21 @@
 ﻿#include "Headers/JsonParsing.h"
 #include "Headers/JsonLiteralParsing.h"
 
-void AssertStringIsNext(std::istream& context, std::string expectedString)
+void AssertStringIsNext(ParsingInputPtr context, std::string expectedString)
 {
 	if (!IsExpectedStringNext(context, expectedString))
 	{
-		throw JsonParsingException("Expected '" + expectedString + "'");
+		throw JsonParsingException("Expected '" + expectedString + "'", context);
 	}
 }
 
-void ParseJsonValue(std::istream& context, JsonValue* output)
+void ParseJsonValue(ParsingInputPtr context, JsonValue* output)
 {
 	SkipWhiteSpace(context);
 	std::string parsedString;
 	double parsedNumber;
 	shared_ptr<JsonArray> parsedJsonArray;
-	switch (context.peek())
+	switch (context->peek())
 	{
 	case 'n':
 		AssertStringIsNext(context, "null");
@@ -35,29 +35,29 @@ void ParseJsonValue(std::istream& context, JsonValue* output)
 		break;
 	case '[':
 		parsedJsonArray = std::make_shared<JsonArray>();
-		ParseJsonArray(context, parsedJsonArray.get());
+		ParseJsonArray(context, parsedJsonArray);
 		*output = JsonValue(parsedJsonArray);
 		break;
 	default:
-		ParseNumber(context, &parsedNumber);
+		parsedNumber = ParseNumber(context);
 		*output = JsonValue(parsedNumber);
 		break;
 	}
 
-	throw JsonParsingException("Expected a string, a number, '[', 'null', 'true' or 'false'.");
+	throw JsonParsingException("Expected a string, a number, '[', 'null', 'true' or 'false'.", context);
 }
 
-void ParseJsonArray(std::istream& context, JsonArray* output)
+void ParseJsonArray(ParsingInputPtr context, JsonArray* output)
 {
 	SkipWhiteSpace(context);
-	if (context.get() != '[')
+	if (context->get() != '[')
 	{
-		throw JsonParsingException("Expected '['.");
+		throw JsonParsingException("Expected '['.", context);
 	}
 
 	shared_ptr<JsonValue> currentValue;
 	SkipWhiteSpace(context);
-	while (context.peek() != ']')
+	while (context->peek() != ']')
 	{
 		currentValue = std::make_shared<JsonValue>(new JsonValue());
 		ParseJsonValue(context, currentValue.get());

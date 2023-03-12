@@ -4,5 +4,5 @@
 #include <iostream>
 #pragma once
 
-void ParseJsonValue(std::istream& context, JsonValue* output);
-void ParseJsonArray(std::istream& context, JsonArray* output);
+void ParseJsonValue(ParsingInputPtr context, shared_ptr<JsonValue> output);
+void ParseJsonArray(ParsingInputPtr context, shared_ptr<JsonArray> output);

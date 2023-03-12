@@ -34,12 +34,13 @@ void attemptToParseInputFile(std::string inputFilePath)
 {
 	std::cout << "Parsing File '" << inputFilePath << "' :" << std::endl;
 
-	std::ifstream filereader;
-	filereader.open(inputFilePath);
-	JsonValue jsonValue;
+	shared_ptr<std::ifstream> inputSourcePtr = std::make_shared<std::ifstream>();
+	inputSourcePtr->open(inputFilePath);
+	ParsingInputPtr wrappedInputSource = std::make_shared<ParsingInput>(inputSourcePtr);
+	shared_ptr<JsonValue> jsonValue = std::make_shared<JsonValue>();
 	try
 	{
-		ParseJsonValue(filereader, &jsonValue);
+		ParseJsonValue(wrappedInputSource, jsonValue);
 		std::cout << "Json successfully parsed!" << std::endl;
 	}
 	catch (JsonParsingException exception)
