@@ -30,11 +30,11 @@ void ParseJsonValue(std::istream& context, JsonValue* output)
 		*output = JsonValue(false);
 		break;
 	case '\'':
-		ParseString(context, &parsedString);
+		//ParseString(context, &parsedString);
 		*output = JsonValue(parsedString);
 		break;
 	case '[':
-		parsedJsonArray = std::make_shared<JsonArray>(new JsonArray());
+		parsedJsonArray = std::make_shared<JsonArray>();
 		ParseJsonArray(context, parsedJsonArray.get());
 		*output = JsonValue(parsedJsonArray);
 		break;
@@ -50,7 +50,6 @@ void ParseJsonValue(std::istream& context, JsonValue* output)
 void ParseJsonArray(std::istream& context, JsonArray* output)
 {
 	SkipWhiteSpace(context);
-	int beginPosition = context.tellg();
 	if (context.get() != '[')
 	{
 		throw JsonParsingException("Expected '['.");

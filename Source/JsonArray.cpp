@@ -2,25 +2,21 @@
 
 JsonArray::JsonArray()
 {
-	children = unique_ptr<std::vector<SharedJsonComponent>>
-		(
-			new std::vector<SharedJsonComponent>()
-		);
-	numChildren = 0;
+	children = std::vector<SharedJsonComponent>();
 }
 
 void JsonArray::AddChild(SharedJsonComponent child)
 {
 	SetParent(shared_from_this(), child);
-	children->push_back(child);
+	children.push_back(child);
 }
 
-int JsonArray::GetNumChildren()
+size_t JsonArray::GetNumChildren()
 {
-	return children->size();
+	return children.size();
 }
 
 weak_ptr<JsonComponent> JsonArray::GetChildAt(int index)
 {
-	return (*children)[index];
+	return children[index];
 }

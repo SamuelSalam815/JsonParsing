@@ -6,4 +6,4 @@
 bool IsExpectedStringNext(std::istream& context, std::string expectedString);
 void SkipWhiteSpace(std::istream& context);
 void ParseNumber(std::istream& context, double* output);
-void ParseString(std::istream& context, std::string* output);
+//void ParseString(std::istream& context, std::string* output);

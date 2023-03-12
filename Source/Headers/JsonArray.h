@@ -5,11 +5,10 @@
 struct JsonArray : JsonComponent
 {
 private:
-	int numChildren;
-	unique_ptr<std::vector<SharedJsonComponent>> children;
+	std::vector<SharedJsonComponent> children;
 public:
 	JsonArray();
 	void AddChild(SharedJsonComponent child);
-	int GetNumChildren();
+	size_t GetNumChildren();
 	weak_ptr<JsonComponent> GetChildAt(int index);
 };
