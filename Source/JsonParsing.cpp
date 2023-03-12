@@ -9,7 +9,7 @@ void AssertStringIsNext(ParsingInputPtr context, std::string expectedString)
 	}
 }
 
-void ParseJsonValue(ParsingInputPtr context, JsonValue* output)
+void ParseJsonValue(ParsingInputPtr context, shared_ptr<JsonValue> output)
 {
 	SkipWhiteSpace(context);
 	std::string parsedString;
@@ -47,7 +47,7 @@ void ParseJsonValue(ParsingInputPtr context, JsonValue* output)
 	throw JsonParsingException("Expected a string, a number, '[', 'null', 'true' or 'false'.", context);
 }
 
-void ParseJsonArray(ParsingInputPtr context, JsonArray* output)
+void ParseJsonArray(ParsingInputPtr context, shared_ptr<JsonArray> output)
 {
 	SkipWhiteSpace(context);
 	if (context->get() != '[')
@@ -60,7 +60,7 @@ void ParseJsonArray(ParsingInputPtr context, JsonArray* output)
 	while (context->peek() != ']')
 	{
 		currentValue = std::make_shared<JsonValue>(new JsonValue());
-		ParseJsonValue(context, currentValue.get());
+		ParseJsonValue(context, currentValue);
 		output->AddChild(currentValue);
 		SkipWhiteSpace(context);
 	}

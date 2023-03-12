@@ -30,6 +30,24 @@ void printInputFile(std::string inputFilePath)
 	filereader.close();
 }
 
+void printErrorContext(JsonParsingException exception)
+{
+	int charPos = exception.context->CurrentCharacterPosition();
+	std::cout << "Error occurred on line "
+		<< exception.context->CurrentLineNumber()
+		<< " Position " << charPos << std::endl << std::endl;
+
+	std::cout << exception.context->CurrentLine() << std::endl;
+
+	for (int segmentsPrinted = 0; segmentsPrinted < charPos; segmentsPrinted++)
+	{
+		std::cout << '~';
+	}
+	std::cout << '^' << std::endl << std::endl;
+	std::cout << exception.errorMessage << std::endl;
+
+}
+
 void attemptToParseInputFile(std::string inputFilePath)
 {
 	std::cout << "Parsing File '" << inputFilePath << "' :" << std::endl;
@@ -46,7 +64,7 @@ void attemptToParseInputFile(std::string inputFilePath)
 	catch (JsonParsingException exception)
 	{
 		std::cout << "Json parsing failed !" << std::endl;
-		std::cout << exception.errorMessage << std::endl;
+		printErrorContext(exception);
 	}
 }
 

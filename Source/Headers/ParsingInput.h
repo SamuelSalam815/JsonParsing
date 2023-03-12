@@ -18,6 +18,9 @@ public:
 	bool good();
 	char peek();
 	char get();
+	int CurrentLineNumber();
+	int CurrentCharacterPosition();
+	std::string CurrentLine();
 };
 
 typedef std::shared_ptr<ParsingInput> ParsingInputPtr;

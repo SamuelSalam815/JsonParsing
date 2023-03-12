@@ -21,15 +21,30 @@ char ParsingInput::get()
 	char nextCharacter = inputSource->get();
 	if(nextCharacter == '\n')
 	{
-		lineNumber = 0;
+		lineNumber++;
 		charPos = 0;
-		currentLine = "";
+		currentLine = inputSource->peek();
 	}
 	else
 	{
 		charPos++;
-		currentLine += nextCharacter;
+		currentLine += inputSource->peek();
 	}
 
 	return nextCharacter;
+}
+
+int ParsingInput::CurrentLineNumber()
+{
+	return lineNumber;
+}
+
+int ParsingInput::CurrentCharacterPosition()
+{
+	return charPos;
+}
+
+std::string ParsingInput::CurrentLine()
+{
+	return currentLine;
 }
