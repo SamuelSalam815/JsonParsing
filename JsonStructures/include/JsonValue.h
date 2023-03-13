@@ -19,7 +19,7 @@ private:
 	bool bool_value;
 	double number_value;
 	std::string string_value;
-	shared_ptr<JsonArray> array_value;
+	std::shared_ptr<JsonArray> array_value;
 
 	void SetAllValueStoresToDefault();
 
@@ -28,5 +28,5 @@ public:
 	JsonValue(bool bool_value);
 	JsonValue(double number_value);
 	JsonValue(std::string string_value);
-	JsonValue(shared_ptr<JsonArray> array_value);
+	JsonValue(std::shared_ptr<JsonArray> array_value);
 };

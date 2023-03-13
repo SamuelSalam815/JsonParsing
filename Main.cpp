@@ -1,6 +1,5 @@
 // Main.cpp : Defines the entry point for the application.
-
-#include "Headers/JsonParsing.h"
+#include "JsonParsing\include\JsonParsing.h"
 #include <sstream>
 #include <fstream>
 
@@ -52,13 +51,12 @@ void attemptToParseInputFile(std::string inputFilePath)
 {
 	std::cout << "Parsing File '" << inputFilePath << "' :" << std::endl;
 
-	shared_ptr<std::ifstream> inputSourcePtr = std::make_shared<std::ifstream>();
+	std::shared_ptr<std::ifstream> inputSourcePtr = std::make_shared<std::ifstream>();
 	inputSourcePtr->open(inputFilePath);
 	ParsingInputPtr wrappedInputSource = std::make_shared<ParsingInput>(inputSourcePtr);
-	shared_ptr<JsonValue> jsonValue = std::make_shared<JsonValue>();
 	try
 	{
-		ParseJsonValue(wrappedInputSource, jsonValue);
+		ParseJsonValue(wrappedInputSource);
 		std::cout << "Json successfully parsed!" << std::endl;
 	}
 	catch (JsonParsingException exception)
@@ -66,6 +64,7 @@ void attemptToParseInputFile(std::string inputFilePath)
 		std::cout << "Json parsing failed !" << std::endl;
 		printErrorContext(exception);
 	}
+	inputSourcePtr->close();
 }
 
 int main(int argc, char** argv)

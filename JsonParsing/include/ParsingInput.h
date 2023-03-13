@@ -1,10 +1,9 @@
 #include <iostream>
 #include <memory>
-
 #pragma once
 
 // Purpose :
-// Wrap an istream object in order to provide input to json parsing functions.
+// Wrap an istream object in order to track additional information.
 // When parsing errors occur, also provides the line, line number and character position of where the error occurred.
 struct ParsingInput
 {

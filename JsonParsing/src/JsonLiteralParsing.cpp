@@ -1,4 +1,4 @@
-#include "Headers/JsonLiteralParsing.h"
+#include "..\include\JsonLiteralParsing.h"
 #include <vector>
 
 bool IsCharValidToAppearInNumber(char c)
@@ -38,6 +38,14 @@ bool IsExpectedStringNext(ParsingInputPtr context, std::string expectedString)
 		}
 	}
 	return true;
+}
+
+void AssertStringIsNext(ParsingInputPtr context, std::string expectedString)
+{
+	if (!IsExpectedStringNext(context, expectedString))
+	{
+		throw JsonParsingException("Expected '" + expectedString + "'", context);
+	}
 }
 
 void SkipWhiteSpace(ParsingInputPtr context)

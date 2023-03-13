@@ -1,4 +1,4 @@
-#include "Headers\JsonArray.h"
+#include "..\include\JsonArray.h"
 
 JsonArray::JsonArray()
 {
@@ -16,7 +16,7 @@ size_t JsonArray::GetNumChildren()
 	return children.size();
 }
 
-weak_ptr<JsonComponent> JsonArray::GetChildAt(int index)
+std::weak_ptr<JsonComponent> JsonArray::GetChildAt(int index)
 {
 	return children[index];
 }

@@ -1,4 +1,4 @@
-#include "Headers/ParsingInput.h"
+#include "..\include\ParsingInput.h"
 
 ParsingInput::ParsingInput(std::shared_ptr<std::istream> inputSource)
 {
