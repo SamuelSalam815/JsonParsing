@@ -4,26 +4,25 @@
 std::shared_ptr<JsonValue> ParseJsonValue(ParsingInputPtr context)
 {
 	SkipWhiteSpace(context);
-	switch (context->peek())
+
+	switch (NextExpectedValueType(context->peek()))
 	{
-	case 'n':
-		AssertStringIsNext(context, "null");
-		return std::make_shared<JsonValue>();
-	case 't':
+	case number:
+		return std::make_shared<JsonValue>(ParseNumber(context));
+	case array:
+		return std::make_shared<JsonValue>(ParseJsonArray(context));
+	case true_value:
 		AssertStringIsNext(context, "true");
 		return std::make_shared<JsonValue>(true);
-	case 'f':
+	case false_value:
 		AssertStringIsNext(context, "false");
 		return std::make_shared<JsonValue>(false);
-	//case '\'':
-	//	  return std::make_shared<JsonValue>(ParseString(context));
-	case '[':
-		return std::make_shared<JsonValue>(ParseJsonArray(context));
-	default:
-		return std::make_shared<JsonValue>(ParseNumber(context));
+	case null:
+		AssertStringIsNext(context, "null");
+		return std::make_shared<JsonValue>();
 	}
 
-	throw JsonParsingException("Expected a string, a number, '[', 'null', 'true' or 'false'.", context);
+	throw JsonParsingException("Expected a string ('\"'), a number ('-' or digit), an array ('['), 'null', 'true' or 'false'.", context);
 }
 
 std::shared_ptr<JsonArray> ParseJsonArray(ParsingInputPtr context)

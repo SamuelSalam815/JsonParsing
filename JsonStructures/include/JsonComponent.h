@@ -1,7 +1,7 @@
 #include <memory>
 #pragma once
 
-struct JsonComponent : public std::enable_shared_from_this< JsonComponent >
+struct JsonComponent
 {
 protected:
 	// Child component has no ownership over its parent
