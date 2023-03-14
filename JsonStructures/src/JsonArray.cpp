@@ -7,7 +7,7 @@ JsonArray::JsonArray()
 
 void JsonArray::AddChild(SharedJsonComponent child)
 {
-	SetParent(shared_from_this(), child);
+	SetParent(child);
 	children.push_back(child);
 }
 

@@ -40,5 +40,5 @@ JsonValue::JsonValue(std::shared_ptr<JsonArray> array_value)
 	SetAllValueStoresToDefault();
 	value_type = array;
 	this->array_value = array_value;
-	SetParent(shared_from_this(), array_value);
+	SetParent(array_value);
 }

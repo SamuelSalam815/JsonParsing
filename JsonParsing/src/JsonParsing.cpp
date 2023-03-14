@@ -48,4 +48,5 @@ std::shared_ptr<JsonArray> ParseJsonArray(ParsingInputPtr context)
 		SkipWhiteSpace(context);
 	}
 	context->get(); // discard closing bracket
+	return output;
 }
