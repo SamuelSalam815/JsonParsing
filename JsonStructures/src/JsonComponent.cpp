@@ -1,11 +1,11 @@
 #include "..\include\JsonComponent.h"
 
-void JsonComponent::SetParent(std::shared_ptr<JsonComponent> child)
+void JsonComponent::AdoptComponent(std::shared_ptr<JsonComponent> parent, std::shared_ptr<JsonComponent> child)
 {
-	child->parent = this;
+	child->parent = parent;
 }
 
-JsonComponent* JsonComponent::GetParent()
+std::weak_ptr<JsonComponent> JsonComponent::GetParent()
 {
 	return parent;
 }
