@@ -2,7 +2,7 @@
 #include <vector>
 #pragma once
 
-struct JsonArray : JsonComponent
+struct JsonArray : JsonComponent, std::enable_shared_from_this<JsonArray>
 {
 private:
 	std::vector<SharedJsonComponent> children;

@@ -1,44 +1,44 @@
 #include "..\include\JsonValue.h"
 
-void JsonValue::SetAllValueStoresToDefault()
+JsonValue::JsonValue()
 {
 	bool_value = bool();
 	number_value = double();
 	string_value = std::string();
 	array_value = nullptr;
 }
-
-JsonValue::JsonValue()
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue()
 {
-	SetAllValueStoresToDefault();
-	value_type = null;
+	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	instance->value_type = null;
+	return instance;
 }
-
-JsonValue::JsonValue(bool bool_value)
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(bool bool_value)
 {
-	SetAllValueStoresToDefault();
-	value_type = boolean;
-	this->bool_value = bool_value;
+	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	instance->bool_value = bool_value;
+	instance->value_type = boolean;
+	return instance;
 }
-
-JsonValue::JsonValue(double number_value)
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(double number_value)
 {
-	SetAllValueStoresToDefault();
-	value_type = number;
-	this->number_value = number_value;
+	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	instance->number_value = number_value;
+	instance->value_type = number;
+	return instance;
 }
-
-JsonValue::JsonValue(std::string string_value)
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::string string_value)
 {
-	SetAllValueStoresToDefault();
-	value_type = string;
-	this->string_value = string_value;
+	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	instance->string_value = string_value;
+	instance->value_type = string;
+	return instance;
 }
-
-JsonValue::JsonValue(std::shared_ptr<JsonArray> array_value)
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::shared_ptr<JsonArray> array_value)
 {
-	SetAllValueStoresToDefault();
-	value_type = array;
-	this->array_value = array_value;
-	SetParent(array_value);
+	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	instance->array_value = array_value;
+	instance->value_type = array;
+	AdoptComponent(instance, array_value);
+	return instance;
 }

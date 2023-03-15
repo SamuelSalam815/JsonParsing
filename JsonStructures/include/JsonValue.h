@@ -21,12 +21,11 @@ private:
 	std::string string_value;
 	std::shared_ptr<JsonArray> array_value;
 
-	void SetAllValueStoresToDefault();
-
-public:
 	JsonValue();
-	JsonValue(bool bool_value);
-	JsonValue(double number_value);
-	JsonValue(std::string string_value);
-	JsonValue(std::shared_ptr<JsonArray> array_value);
+public:
+	static std::shared_ptr<JsonValue> CreateJsonValue();
+	static std::shared_ptr<JsonValue> CreateJsonValue(bool bool_value);
+	static std::shared_ptr<JsonValue> CreateJsonValue(double number_value);
+	static std::shared_ptr<JsonValue> CreateJsonValue(std::string string_value);
+	static std::shared_ptr<JsonValue> CreateJsonValue(std::shared_ptr<JsonArray> array_value);
 };
