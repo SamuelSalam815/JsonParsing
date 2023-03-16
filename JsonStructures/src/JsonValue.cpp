@@ -9,34 +9,34 @@ JsonValue::JsonValue()
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue()
 {
-	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	std::shared_ptr<JsonValue> instance(new JsonValue());
 	instance->value_type = null;
 	return instance;
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(bool bool_value)
 {
-	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	std::shared_ptr<JsonValue> instance(new JsonValue());
 	instance->bool_value = bool_value;
 	instance->value_type = boolean;
 	return instance;
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(double number_value)
 {
-	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	std::shared_ptr<JsonValue> instance(new JsonValue());
 	instance->number_value = number_value;
 	instance->value_type = number;
 	return instance;
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::string string_value)
 {
-	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	std::shared_ptr<JsonValue> instance(new JsonValue());
 	instance->string_value = string_value;
 	instance->value_type = string;
 	return instance;
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::shared_ptr<JsonArray> array_value)
 {
-	std::shared_ptr<JsonValue> instance = std::make_shared<JsonValue>();
+	std::shared_ptr<JsonValue> instance(new JsonValue());
 	instance->array_value = array_value;
 	instance->value_type = array;
 	AdoptComponent(instance, array_value);

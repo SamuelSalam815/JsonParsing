@@ -8,18 +8,18 @@ std::shared_ptr<JsonValue> ParseJsonValue(ParsingInputPtr context)
 	switch (NextExpectedValueType(context->peek()))
 	{
 	case number:
-		return std::make_shared<JsonValue>(ParseNumber(context));
+		return JsonValue::CreateJsonValue(ParseNumber(context));
 	case array:
-		return std::make_shared<JsonValue>(ParseJsonArray(context));
+		return JsonValue::CreateJsonValue(ParseJsonArray(context));
 	case true_value:
 		AssertStringIsNext(context, "true");
-		return std::make_shared<JsonValue>(true);
+		return JsonValue::CreateJsonValue(true);
 	case false_value:
 		AssertStringIsNext(context, "false");
-		return std::make_shared<JsonValue>(false);
+		return JsonValue::CreateJsonValue(false);
 	case null:
 		AssertStringIsNext(context, "null");
-		return std::make_shared<JsonValue>();
+		return JsonValue::CreateJsonValue();
 	}
 
 	throw JsonParsingException("Expected a string ('\"'), a number ('-' or digit), an array ('['), 'null', 'true' or 'false'.", context);
