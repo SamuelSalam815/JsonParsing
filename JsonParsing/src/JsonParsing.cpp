@@ -7,6 +7,8 @@ std::shared_ptr<JsonValue> ParseJsonValue(ParsingInputPtr context)
 
 	switch (NextExpectedValueType(context->peek()))
 	{
+	case string:
+		return JsonValue::CreateJsonValue(ParseString(context));
 	case number:
 		return JsonValue::CreateJsonValue(ParseNumber(context));
 	case array:

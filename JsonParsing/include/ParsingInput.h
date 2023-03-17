@@ -12,6 +12,8 @@ private:
 	std::string currentLine;
 	int lineNumber;
 	int charPos;
+	bool hasNextCharBeenPeeked;
+	void ProcessCharacter(char character);
 public:
 	ParsingInput(std::shared_ptr<std::istream> inputSource);
 	bool good();

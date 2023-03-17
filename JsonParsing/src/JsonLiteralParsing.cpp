@@ -107,3 +107,8 @@ double ParseNumber(ParsingInputPtr context)
 	char* ptrToFirstElement = &(charsRead[0]);
 	return std::atof(ptrToFirstElement);
 }
+
+std::string ParseString(ParsingInputPtr context)
+{
+	throw JsonParsingException("String parsing not supported yet!", context);
+}

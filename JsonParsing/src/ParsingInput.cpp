@@ -1,11 +1,27 @@
 #include "..\include\ParsingInput.h"
 
+void ParsingInput::ProcessCharacter(char character)
+{
+	if (character == '\n')
+	{
+		lineNumber++;
+		charPos = -1;
+		currentLine = "";
+	}
+	else
+	{
+		charPos++;
+		currentLine += character;
+	}
+}
+
 ParsingInput::ParsingInput(std::shared_ptr<std::istream> inputSource)
 {
 	this->inputSource = inputSource;
 	this->currentLine = std::string();
 	this->lineNumber = 0;
-	this->charPos = 0;
+	this->charPos = -1;
+	this->hasNextCharBeenPeeked = false;
 }
 
 bool ParsingInput::good() 
@@ -14,23 +30,22 @@ bool ParsingInput::good()
 }
 char ParsingInput::peek()
 {
-	return inputSource->peek();
+	char nextCharacter = inputSource->peek();
+	if (!hasNextCharBeenPeeked)
+	{
+		hasNextCharBeenPeeked = true;
+		ProcessCharacter(nextCharacter);
+	}
+	return nextCharacter;
 }
 char ParsingInput::get()
 {
 	char nextCharacter = inputSource->get();
-	if(nextCharacter == '\n')
+	if (!hasNextCharBeenPeeked)
 	{
-		lineNumber++;
-		charPos = 0;
-		currentLine = inputSource->peek();
+		ProcessCharacter(nextCharacter);
 	}
-	else
-	{
-		charPos++;
-		currentLine += inputSource->peek();
-	}
-
+	hasNextCharBeenPeeked = false;
 	return nextCharacter;
 }
 

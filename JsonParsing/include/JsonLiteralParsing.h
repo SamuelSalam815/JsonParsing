@@ -20,4 +20,4 @@ JsonValueType NextExpectedValueType(char c);
 void SkipWhiteSpace(ParsingInputPtr context);
 void AssertStringIsNext(ParsingInputPtr context, std::string expectedString);
 double ParseNumber(ParsingInputPtr context);
-//std::string ParseString(ParsingInputPtr context);
+std::string ParseString(ParsingInputPtr context);
