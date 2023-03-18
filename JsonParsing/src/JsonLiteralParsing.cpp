@@ -111,4 +111,24 @@ double ParseNumber(ParsingInputPtr context)
 std::string ParseString(ParsingInputPtr context)
 {
 	throw JsonParsingException("String parsing not supported yet!", context);
+	if(context.get() != '\"')
+	{
+		throw JsonParsingException("Expected \"!", context);
+	}
+	std::string result = "";
+	while(context.good())
+	{
+		char currentCharacter;
+		switch(currentCharacter = context.get())
+		{
+			case '\\':
+				throw JsonParsingException("Control characters not yet supported!", context);
+				break;
+			case "\"":
+				return result;
+			default:
+				result += currentCharacter;
+		}
+	}
+	throw JsonParsingException("Unexpected end of input!", context);
 }
