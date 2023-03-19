@@ -11,6 +11,8 @@ std::shared_ptr<JsonValue> ParseJsonValue(ParsingInputPtr context)
 		return JsonValue::CreateJsonValue(ParseString(context));
 	case number:
 		return JsonValue::CreateJsonValue(ParseNumber(context));
+	case object:
+		return JsonValue::CreateJsonValue(ParseJsonObject(context));
 	case array:
 		return JsonValue::CreateJsonValue(ParseJsonArray(context));
 	case true_value:
@@ -24,7 +26,7 @@ std::shared_ptr<JsonValue> ParseJsonValue(ParsingInputPtr context)
 		return JsonValue::CreateJsonValue();
 	}
 
-	throw JsonParsingException("Expected a string ('\"'), a number ('-' or digit), an array ('['), 'null', 'true' or 'false'.", context);
+	throw JsonParsingException("Expected a string ('\"'), a number ('-' or digit), an array ('['), an object ('{'), 'null', 'true' or 'false'.", context);
 }
 
 std::shared_ptr<JsonArray> ParseJsonArray(ParsingInputPtr context)
@@ -46,6 +48,38 @@ std::shared_ptr<JsonArray> ParseJsonArray(ParsingInputPtr context)
 		}
 		isFirstElement = false;
 		output->AddChild(ParseJsonValue(context));
+		SkipWhiteSpace(context);
+	}
+	context->get(); // discard closing bracket
+	return output;
+}
+
+std::shared_ptr<JsonObject> ParseJsonObject(ParsingInputPtr context)
+{
+	SkipWhiteSpace(context);
+	if (context->get() != '{')
+	{
+		throw JsonParsingException("Expected '{'!", context);
+	}
+
+	std::shared_ptr<JsonObject> output = std::make_shared<JsonObject>();
+	std::string currentKey;
+	SharedJsonComponent currentValue;
+	bool isFirstElement = true;
+	SkipWhiteSpace(context);
+	while (context->peek() != '}')
+	{
+		if (!isFirstElement)
+		{
+			AssertStringIsNext(context, ",");
+		}
+		isFirstElement = false;
+		SkipWhiteSpace(context);
+		currentKey = ParseString(context);
+		SkipWhiteSpace(context);
+		AssertStringIsNext(context, ":");
+		currentValue = ParseJsonValue(context);
+		output->AddChild(currentKey, currentValue);
 		SkipWhiteSpace(context);
 	}
 	context->get(); // discard closing bracket

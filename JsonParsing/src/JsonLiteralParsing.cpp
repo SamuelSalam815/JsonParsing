@@ -118,6 +118,7 @@ std::string GetUnicodeSequence(ParsingInputPtr context)
 			throw JsonParsingException("Expected Valid Hex digit!", context);
 		}
 	}
+	return result;
 }
 
 std::string GetExcapedSequence(ParsingInputPtr context)
@@ -125,6 +126,7 @@ std::string GetExcapedSequence(ParsingInputPtr context)
 	while (context->good())
 	{
 		char nextCharacter = context->get();
+		std::string unicodeDigits;
 		switch (nextCharacter)
 		{
 		case '\\':
@@ -146,9 +148,13 @@ std::string GetExcapedSequence(ParsingInputPtr context)
 
 std::string ParseString(ParsingInputPtr context)
 {
-	if(context->get() != '\"')
+	char nextChar = context->get();
+	if(nextChar != '\"')
 	{
-		throw JsonParsingException("Expected \"!", context);
+		std::string msg = "Expected start of string ('\"')! Got : '";
+		msg += nextChar;
+		msg += "'!";
+		throw JsonParsingException(msg, context);
 	}
 	std::string result = "";
 	while(context->good())

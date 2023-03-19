@@ -6,6 +6,7 @@ JsonValue::JsonValue()
 	number_value = double();
 	string_value = std::string();
 	array_value = nullptr;
+	object_value = nullptr;
 }
 std::shared_ptr<JsonValue> JsonValue::CreateJsonValue()
 {
@@ -40,5 +41,14 @@ std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::shared_ptr<JsonArray>
 	instance->array_value = array_value;
 	instance->value_type = array;
 	AdoptComponent(instance, array_value);
+	return instance;
+}
+
+std::shared_ptr<JsonValue> JsonValue::CreateJsonValue(std::shared_ptr<JsonObject> object_value)
+{
+	std::shared_ptr<JsonValue> instance(new JsonValue());
+	instance->object_value = object_value;
+	instance->value_type = object;
+	AdoptComponent(instance, object_value);
 	return instance;
 }

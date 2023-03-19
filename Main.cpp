@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 {
 	printArguments(argc, argv);
 
-	std::string inputFile = "simpleInput.json";
+	std::string inputFile = "input.json";
 	printInputFile(inputFile);
 	attemptToParseInputFile(inputFile);
 	
