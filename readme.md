@@ -1,7 +1,7 @@
 ### TODO
 
 - Improve and standardize error messages
-- Add line numbers to the input when it is printed
+- Print entire line when error encountered (i.e. even characters not parsed or peeked yet)
 - Tidy up public interface
     - Out of the parsing functions, the client only needs to access 'ParseJsonValue'
 - Test use of data structures after parsing

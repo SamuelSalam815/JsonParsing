@@ -2,6 +2,7 @@
 #include "JsonParsing\include\JsonParsing.h"
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 
 void printArguments(int argc, char** argv)
 {
@@ -21,9 +22,18 @@ void printInputFile(std::string inputFilePath)
 
 	std::ifstream filereader;
 	filereader.open(inputFilePath);
+	bool isNewLine = true;
+	int numLines = 0;
+	std::cout << std::setfill('0');
 	for (char c = filereader.get(); filereader.good(); c = filereader.get())
 	{
+		if (isNewLine)
+		{
+			std::cout << std::setw(4) << numLines << "|";
+			numLines++;
+		}
 		std::cout << c;
+		isNewLine = c == '\n';
 	}
 	std::cout << std::endl << std::endl;
 	filereader.close();
@@ -35,14 +45,10 @@ void printErrorContext(JsonParsingException exception)
 	std::cout << "Error occurred on line "
 		<< exception.context->CurrentLineNumber()
 		<< " Position " << charPos << std::endl << std::endl;
-
 	std::cout << exception.context->CurrentLine() << std::endl;
-
-	for (int segmentsPrinted = 0; segmentsPrinted < charPos; segmentsPrinted++)
-	{
-		std::cout << '~';
-	}
-	std::cout << '^' << std::endl << std::endl;
+	std::cout << std::setfill('~') << std::setw(charPos + 1) 
+			  << '^'
+			  << std::endl << std::endl;
 	std::cout << exception.errorMessage << std::endl;
 
 }
@@ -71,7 +77,7 @@ int main(int argc, char** argv)
 {
 	printArguments(argc, argv);
 
-	std::string inputFile = "input.json";
+	std::string inputFile = "simpleInput.json";
 	printInputFile(inputFile);
 	attemptToParseInputFile(inputFile);
 	
