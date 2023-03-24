@@ -15,7 +15,7 @@ add_executable (JsonParsing
 "JsonParsing/src/JsonParsingException.cpp"
 "JsonParsing/src/ParsingInput.cpp"
 
-"Main.cpp"  "JsonStructures/src/JsonObject.cpp" )
+"Main.cpp"  "JsonStructures/src/JsonObject.cpp"  "JsonParsing/include/ParseNumberState.h" "JsonParsing/src/ParseNumberState.cpp")
 
 set_property(TARGET JsonParsing PROPERTY CXX_STANDARD 17)
 
