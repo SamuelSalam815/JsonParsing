@@ -42,14 +42,14 @@ void printInputFile(std::string inputFilePath)
 void printErrorContext(JsonParsingException exception)
 {
 	int charPos = exception.context->CurrentCharacterPosition();
-	std::cout << "Error occurred on line "
+	std::cerr << "Error occurred on line "
 		<< exception.context->CurrentLineNumber()
-		<< " Position " << charPos << std::endl << std::endl;
-	std::cout << exception.context->CurrentLine() << std::endl;
-	std::cout << std::setfill('~') << std::setw(charPos + 1) 
+		<< " Position " << charPos << ":" << std::endl << std::endl;
+	std::cerr << exception.context->CurrentLine();
+	std::cerr << std::setfill('~') << std::setw(charPos + 1) 
 			  << '^'
 			  << std::endl << std::endl;
-	std::cout << exception.errorMessage << std::endl;
+	std::cerr << exception.errorMessage << std::endl;
 
 }
 
