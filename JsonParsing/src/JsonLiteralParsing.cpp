@@ -1,4 +1,5 @@
 #include "..\include\JsonLiteralParsing.h"
+#include "..\include\ParseNumberState.h"
 #include <vector>
 
 std::string EOF_Error_Message = "Unexpected end of input!";
@@ -71,28 +72,26 @@ void AssertStringIsNext(ParsingInputPtr context, std::string expectedString)
 double ParseNumber(ParsingInputPtr context)
 {
 	SkipWhiteSpace(context);
-	
-	std::vector<char> validFirstCharacters = { '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-	if (!vector_contains(validFirstCharacters, context->peek()))
-	{
-		throw JsonParsingException("Expected number", context);
-	}
-
 	std::vector<char> charsRead = std::vector<char>();
-	std::vector<char> allowedCharacters = { '-', '+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'E', 'e', '.' };
-	bool nextCharIsValid = true;
-	while (context->good() && nextCharIsValid)
+	ParseState* currentState = ParseNumberState::Initial::GetInstance();
+	ParseState* errorState = ParseNumberState::Error::GetInstance();
+	ParseState* successState = ParseNumberState::Success::GetInstance();
+	char nextCharacter;
+	while (context->good())
 	{
-		if (vector_contains(allowedCharacters, context->peek()))
+		nextCharacter = context->peek();
+		currentState = currentState->Transition(context->peek());
+		if (currentState == errorState)
 		{
-			charsRead.push_back(context->get());
+			throw JsonParsingException("Error encountered while parsing number", context);
 		}
-		else
+		if (currentState == successState)
 		{
-			char* ptrToFirstElement = &(charsRead[0]);
-			return std::atof(ptrToFirstElement);
+			break;
 		}
+		charsRead.push_back(context->get());
 	}
+	return std::atof(&(charsRead[0]));
 }
 
 std::string GetUnicodeSequence(ParsingInputPtr context)

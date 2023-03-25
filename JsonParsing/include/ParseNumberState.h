@@ -92,6 +92,15 @@ namespace ParseNumberState
 		ExponentSign() {}
 	};
 
+	struct FirstExponentDigit : ParseState
+	{
+	public:
+		static FirstExponentDigit* GetInstance();
+		ParseState* Transition(char input);
+	private:
+		FirstExponentDigit() {}
+	};
+
 	struct ExponentDigits : ParseState
 	{
 	public:
